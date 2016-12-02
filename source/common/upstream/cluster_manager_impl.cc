@@ -141,7 +141,7 @@ void ClusterManagerImpl::loadCluster(const Json::Object& cluster, Stats::Store& 
   }
 
   new_cluster->setOutlierDetector(Outlier::DetectorImplFactory::createForCluster(
-      *new_cluster, cluster, dns_resolver.dispatcher(), runtime, stats));
+      *new_cluster, cluster, dns_resolver.dispatcher(), runtime, stats, nullptr)); // fixfix
   primary_clusters_.emplace(new_cluster->name(), new_cluster);
 }
 

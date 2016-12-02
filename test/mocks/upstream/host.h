@@ -14,6 +14,16 @@ public:
   MOCK_METHOD1(putResponseTime, void(std::chrono::milliseconds time));
 };
 
+class MockEventLogger : public EventLogger {
+public:
+  MockEventLogger();
+  ~MockEventLogger();
+
+  MOCK_METHOD2(logEject, void(HostPtr host, EjectionType type));
+  MOCK_METHOD1(logUneject, void(HostPtr host));
+  MOCK_METHOD0(reopen, void());
+};
+
 class MockDetector : public Detector {
 public:
   MockDetector();

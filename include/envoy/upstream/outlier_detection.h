@@ -1,5 +1,6 @@
 #pragma once
 
+#include "envoy/access_log/access_log.h"
 #include "envoy/common/pure.h"
 
 namespace Upstream {
@@ -29,6 +30,28 @@ public:
 };
 
 typedef std::unique_ptr<DetectorHostSink> DetectorHostSinkPtr;
+
+enum class EjectionType { Consecutive5xx };
+
+/**
+ * fixfix
+ */
+class EventLogger {
+public:
+  virtual ~EventLogger() {}
+
+  /**
+   * fixfix
+   */
+  virtual void logEject(HostPtr host, EjectionType type) PURE;
+
+  /**
+   *
+   */
+  virtual void logUneject(HostPtr host) PURE;
+};
+
+typedef std::shared_ptr<EventLogger> EventLoggerPtr;
 
 /**
  * Interface for an outlier detection engine. Uses per host data to determine which hosts in a

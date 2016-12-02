@@ -11,7 +11,6 @@
 #include "common/stats/stats_impl.h"
 #include "common/upstream/upstream_impl.h"
 
-#include "test/mocks/api/mocks.h"
 #include "test/mocks/event/mocks.h"
 #include "test/mocks/runtime/mocks.h"
 #include "test/mocks/upstream/mocks.h"
@@ -66,14 +65,11 @@ public:
     ON_CALL(*file_, write(_)).WillByDefault(SaveArg<0>(&output_));
   }
 
-  NiceMock<Api::MockApi> api_;
   TestHeaderMapImpl request_headers_{{":method", "GET"}, {":path", "/"}};
   TestHeaderMapImpl response_headers_;
   TestRequestInfo request_info_;
   Filesystem::MockFile* file_;
   std::string output_;
-  Event::MockDispatcher dispatcher_;
-  Thread::MutexBasicLockable lock_;
 };
 
 TEST_F(AccessLogImplTest, LogMoreData) {

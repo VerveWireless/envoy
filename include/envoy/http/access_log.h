@@ -1,6 +1,5 @@
 #pragma once
 
-#include "envoy/access_log/access_log.h"
 #include "envoy/common/optional.h"
 #include "envoy/common/pure.h"
 #include "envoy/common/time.h"
@@ -127,7 +126,7 @@ typedef std::unique_ptr<Filter> FilterPtr;
 /**
  * Abstract access logger for HTTP requests and responses.
  */
-class Instance : public ::AccessLog::AccessLog {
+class Instance {
 public:
   virtual ~Instance() {}
 

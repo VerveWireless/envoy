@@ -1,20 +1,9 @@
 #pragma once
 
 #include "envoy/common/pure.h"
+#include "envoy/filesystem/filesystem.h"
 
 namespace AccessLog {
-
-class AccessLog {
-public:
-  virtual ~AccessLog() {}
-
-  /**
-   * Reopen access log file.
-   */
-  virtual void reopen() PURE;
-};
-
-typedef std::shared_ptr<AccessLog> AccessLogPtr;
 
 class AccessLogManager {
 public:
@@ -26,9 +15,9 @@ public:
   virtual void reopen() PURE;
 
   /**
-   * Register access log to manager.
+   * FIXFIX
    */
-  virtual void registerAccessLog(AccessLogPtr accessLog) PURE;
+  virtual Filesystem::FilePtr createAccessLog(const std::string& file_name) PURE;
 };
 
 typedef std::unique_ptr<AccessLogManager> AccessLogManagerPtr;

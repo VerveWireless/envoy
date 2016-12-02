@@ -24,12 +24,6 @@ public:
   virtual ~Instance() {}
 
   /**
-   * @return Thread::BasicLockable& the single lock used for writing out to access logs. In the
-   *         future we may decide to allow multiple access log locks.
-   */
-  virtual Thread::BasicLockable& accessLogLock() PURE;
-
-  /**
    * @return Admin& the global HTTP admin endpoint for the server.
    */
   virtual Admin& admin() PURE;

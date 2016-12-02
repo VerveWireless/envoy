@@ -89,7 +89,6 @@ public:
     return RateLimit::ClientPtr{rateLimitClient_()};
   }
 
-  MOCK_METHOD0(accessLogLock, Thread::BasicLockable&());
   MOCK_METHOD0(admin, Admin&());
   MOCK_METHOD0(api, Api::Api&());
   MOCK_METHOD0(clusterManager, Upstream::ClusterManager&());

@@ -28,7 +28,7 @@ class DetectorImplFactory {
 public:
   static DetectorPtr createForCluster(Cluster& cluster, const Json::Object& cluster_config,
                                       Event::Dispatcher& dispatcher, Runtime::Loader& runtime,
-                                      Stats::Store& stats);
+                                      Stats::Store& stats, EventLoggerPtr event_logger);
 };
 
 class DetectorImpl;
@@ -89,13 +89,13 @@ public:
 
 protected:
   DetectorImpl(Cluster& cluster, Event::Dispatcher& dispatcher, Runtime::Loader& runtime,
-               Stats::Store& stats, SystemTimeSource& time_source);
+               Stats::Store& stats, SystemTimeSource& time_source, EventLoggerPtr event_logger);
 
 private:
   void addHostSink(HostPtr host);
   void armIntervalTimer();
   void checkHostForUneject(HostPtr host, DetectorHostSinkImpl* sink, SystemTime now);
-  void ejectHost(HostPtr host);
+  void ejectHost(HostPtr host, EjectionType type);
   static DetectionStats generateStats(const std::string& name, Stats::Store& store);
   void onConsecutive5xxWorker(HostPtr host);
   void onIntervalTimer();
@@ -108,16 +108,23 @@ private:
   Event::TimerPtr interval_timer_;
   std::list<ChangeStateCb> callbacks_;
   std::unordered_map<HostPtr, DetectorHostSinkImpl*> host_sinks_;
+  EventLoggerPtr event_logger_;
 };
 
 class ProdDetectorImpl : public DetectorImpl, public SystemTimeSource {
 public:
   ProdDetectorImpl(Cluster& cluster, Event::Dispatcher& dispatcher, Runtime::Loader& runtime,
-                   Stats::Store& stats)
-      : DetectorImpl(cluster, dispatcher, runtime, stats, *this) {}
+                   Stats::Store& stats, EventLoggerPtr event_logger)
+      : DetectorImpl(cluster, dispatcher, runtime, stats, *this, event_logger) {}
 
   // SystemTimeSource
   SystemTime currentSystemTime() override { return std::chrono::system_clock::now(); }
+};
+
+class EventLoggerImpl : public EventLogger {
+public:
+private:
+  Filesystem::FilePtr file_;
 };
 
 } // Outlier
